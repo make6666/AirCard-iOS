@@ -1,0 +1,27 @@
+name: Build AirCard IPA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Build AirCard IPA
+        run: |
+          chmod +x build-ipa.sh
+          ./build-ipa.sh
+
+      - name: Upload AirCard IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: AirCard-iOS
+          path: build/AirCard-iOS.ipa
+          if-no-files-found: error
